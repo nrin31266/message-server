@@ -3,6 +3,8 @@ package com.rin.message.service;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.rin.message.dto.request.LoginRequest;
+import com.rin.message.dto.response.LoginResponse;
 import com.rin.message.entity.User;
 import com.rin.message.repository.UserRepository;
 import lombok.AccessLevel;
@@ -11,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,9 +32,26 @@ public class AuthService {
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
+    PasswordEncoder passwordEncoder;
 
 
 
+
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository
+                        .findByUsername(request.getUsernameOrEmail())
+                        .orElse(userRepository.findByEmail(request.getUsernameOrEmail())
+                        .orElseThrow(() -> new RuntimeException("User not found"))
+        );
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
+
+        return LoginResponse.builder()
+                .token(generateToken(user))
+                .build();
+    }
 
     private String generateToken(User user) {
         JWTClaimsSet jwtClaimsSet= new JWTClaimsSet.Builder()
