@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,7 @@ public class UserService {
     UserMapper userMapper;
     UserRepository userRepository;
     ProfileRepository profileRepository;
-//    PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponse createUser(CreateUserRequest request) {
@@ -30,9 +31,9 @@ public class UserService {
         }
         User user = userMapper.toUser(request);
 
-//        if(request.getPassword() != null) {
-//            user.setPassword(passwordEncoder.encode(request.getPassword()));
-//        }
+        if(request.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
         try {
             user = userRepository.save(user);
         }catch (Exception e) {
