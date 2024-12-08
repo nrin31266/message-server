@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,6 +25,9 @@ public class User {
     @Column(updatable = false)
     Instant createdAt;
     Instant updatedAt;
+
+    @ManyToMany
+    List<Role> roles;
 
     @PrePersist
     protected void onCreate() {
