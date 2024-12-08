@@ -1,0 +1,35 @@
+version: "3.8"
+
+networks:
+  message-clone:
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: message-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: message
+      MYSQL_USER: nrin31266
+      MYSQL_PASSWORD: 16092005
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - message-clone
+
+  mysqladmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: message-mysqladmin
+    ports:
+      - "8181:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    networks:
+      - message-clone
+
+volumes:
+  mysql-data:
