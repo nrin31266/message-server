@@ -20,6 +20,7 @@ public class User {
     @Column(unique = true, nullable = false)
     String username;
     String password;
+    @Column(unique = true, nullable = false)
     String email;
     boolean enabled;
     @Column(updatable = false)

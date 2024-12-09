@@ -27,7 +27,7 @@ public class SecurityConfig {
     }
 
     private static final String[] PUBLIC_ENDPOINTS_POST = new String[]{
-            "/users"
+            "/users", "/auth/login"
     };
     private static final String[] PUBLIC_ENDPOINTS_GET = new String[]{};
     private static final String[] PUBLIC_ENDPOINTS_DELETE = new String[]{};
