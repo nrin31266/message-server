@@ -14,6 +14,7 @@ public enum ErrorCode {
     TOKEN_INVALID(1005, "Token Invalid", HttpStatus.UNAUTHORIZED),
     CAN_NOT_PARSE_TOKEN(1006, "Can't parse token", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1008, "You do not have permission", HttpStatus.FORBIDDEN),
     ;
 
 
