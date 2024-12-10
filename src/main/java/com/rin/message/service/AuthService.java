@@ -6,6 +6,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.rin.message.dto.request.LoginRequest;
 import com.rin.message.dto.response.LoginResponse;
 import com.rin.message.entity.User;
+import com.rin.message.exception.AppException;
+import com.rin.message.exception.ErrorCode;
 import com.rin.message.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +41,11 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Wrong password");
+            throw new AppException(ErrorCode.WRONG_PASSWORD);
         }
 
         return LoginResponse.builder()

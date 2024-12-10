@@ -3,6 +3,8 @@ package com.rin.message.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,4 +15,6 @@ public class ApiResponse<T> {
     int code = 200;
     String message;
     T result;
+    @Builder.Default
+    Instant timestamp = Instant.now();
 }
