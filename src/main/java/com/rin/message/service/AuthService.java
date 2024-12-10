@@ -57,7 +57,6 @@ public class AuthService {
         JWTClaimsSet jwtClaimsSet= new JWTClaimsSet.Builder()
                 .subject(user.getId())
                 .claim("username", user.getUsername())
-                .claim("email", user.getEmail())
                 .issuer("message.rin")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()))

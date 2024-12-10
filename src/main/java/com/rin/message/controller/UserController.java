@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -29,5 +28,17 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/{username}")
+    public ApiResponse<UserResponse> getUserByUsername(@PathVariable("username") String username){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserUsername(username))
+                .build();
+    }
 
+    @GetMapping
+    public ApiResponse<List<UserResponse>> getUserByUsername(){
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
+    }
 }

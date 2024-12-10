@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,7 +52,13 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-//    public UserResponse getUserUsername(String username) {
-//        Optional<User> user = userRepository.findByUsername(username).orElseThrow();
-//    }
+    public UserResponse getUserUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResponse(user);
+    }
+
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(userMapper::toUserResponse).toList();
+    }
 }
