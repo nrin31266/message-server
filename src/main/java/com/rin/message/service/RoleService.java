@@ -20,13 +20,14 @@ public class RoleService {
     PermissionRepository permissionRepository;
 
     public void save(CreateRoleRequest request) {
-        List<Permission> permissions = permissionRepository.findAllByName(request.getName());
+        List<Permission> permissions = permissionRepository.findAllById(request.getPermissions());
 
         Role role = Role.builder()
                 .name(request.getName())
                 .description(request.getDescription())
                 .permissions(permissions)
                 .build();
+
 
         roleRepository.save(role);
 

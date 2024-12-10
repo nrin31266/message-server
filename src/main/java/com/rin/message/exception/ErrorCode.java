@@ -10,6 +10,10 @@ public enum ErrorCode {
     USER_NOT_FOUND(1002, "User not found", HttpStatus.NOT_FOUND),
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     WRONG_PASSWORD(1003, "Wrong password", HttpStatus.BAD_REQUEST),
+    TOKEN_EXPIRED(1004, "Token expired", HttpStatus.UNAUTHORIZED),
+    TOKEN_INVALID(1005, "Token Invalid", HttpStatus.UNAUTHORIZED),
+    CAN_NOT_PARSE_TOKEN(1006, "Can't parse token", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     ;
 
 

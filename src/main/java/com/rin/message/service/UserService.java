@@ -9,6 +9,7 @@ import com.rin.message.exception.AppException;
 import com.rin.message.exception.ErrorCode;
 import com.rin.message.mapper.UserMapper;
 import com.rin.message.repository.ProfileRepository;
+import com.rin.message.repository.RoleRepository;
 import com.rin.message.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class UserService {
     UserRepository userRepository;
     ProfileRepository profileRepository;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public UserResponse createUser(CreateUserRequest request) {
@@ -41,6 +43,8 @@ public class UserService {
         if(request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
+        user.setRoles(roleRepository.findAllById(List.of("USER")));
+
         try {
             user = userRepository.save(user);
         }catch (Exception e) {

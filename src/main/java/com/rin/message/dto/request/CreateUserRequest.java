@@ -1,14 +1,12 @@
 package com.rin.message.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,7 +17,7 @@ public class CreateUserRequest {
     @NotBlank(message = "Username not blank")
     @NotNull(message = "Username not null")
     @NotEmpty(message = "Username not empty")
-    @Min(message = "Username can not less 4 characters", value = 4)
+    @Size(min = 4, message = "Username must be at least 4 characters long")
     String username;
     String password;
     String email;
@@ -31,4 +29,5 @@ public class CreateUserRequest {
     String gender;
     String phone;
     String avatar;
+
 }

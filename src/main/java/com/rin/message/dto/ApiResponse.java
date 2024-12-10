@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
@@ -16,5 +17,5 @@ public class ApiResponse<T> {
     String message;
     T result;
     @Builder.Default
-    Instant timestamp = Instant.now();
+    String timestamp = Instant.now().toString();
 }

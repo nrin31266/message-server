@@ -2,8 +2,12 @@ package com.rin.message.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+import com.rin.message.dto.request.IntrospectRequest;
 import com.rin.message.dto.request.LoginRequest;
+import com.rin.message.dto.response.IntrospectResponse;
 import com.rin.message.dto.response.LoginResponse;
 import com.rin.message.entity.User;
 import com.rin.message.exception.AppException;
@@ -19,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -87,5 +92,32 @@ public class AuthService {
             });
         }
         return stringJoiner.toString();
+    }
+
+    public IntrospectResponse introspect(IntrospectRequest request) {
+        String token = request.getToken();
+        try {
+            isTokenValid(token);
+        } catch (ParseException parseException) {
+            throw new AppException(ErrorCode.CAN_NOT_PARSE_TOKEN);
+        } catch (JOSEException joseException){
+            throw new AppException(ErrorCode.TOKEN_INVALID);
+        }
+        return IntrospectResponse.builder()
+                .isValid(true)
+                .build();
+    }
+
+    private void isTokenValid(String token) throws ParseException, JOSEException {
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+        boolean verified = signedJWT.verify(verifier);
+        if(!verified){
+            throw new AppException(ErrorCode.TOKEN_INVALID);
+        }
+        Date expirationDate = signedJWT.getJWTClaimsSet().getExpirationTime();
+        if(expirationDate.before(new Date())){
+            throw new AppException(ErrorCode.TOKEN_EXPIRED);
+        }
     }
 }

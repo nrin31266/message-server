@@ -1,7 +1,9 @@
 package com.rin.message.controller;
 
 import com.rin.message.dto.ApiResponse;
+import com.rin.message.dto.request.IntrospectRequest;
 import com.rin.message.dto.request.LoginRequest;
+import com.rin.message.dto.response.IntrospectResponse;
 import com.rin.message.dto.response.LoginResponse;
 import com.rin.message.service.AuthService;
 import lombok.AccessLevel;
@@ -26,6 +28,13 @@ public class AuthController {
 
         return ApiResponse.<LoginResponse>builder()
                 .result(authService.login(loginRequest))
+                .build();
+    }
+
+    @PostMapping("/introspect")
+    public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest introspectRequest) {
+        return ApiResponse.<IntrospectResponse>builder()
+                .result(authService.introspect(introspectRequest))
                 .build();
     }
 }
