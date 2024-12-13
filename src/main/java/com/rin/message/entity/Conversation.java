@@ -15,7 +15,7 @@ import java.time.Instant;
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
+    Long id;
     String name;
     @Builder.Default
     boolean isGroup=false;

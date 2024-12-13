@@ -36,6 +36,7 @@ public class UserService {
     ProfileRepository profileRepository;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    AuthService authService;
 
     @Transactional(rollbackFor = Exception.class)
     public UserResponse createUser(CreateUserRequest request) {
@@ -57,7 +58,7 @@ public class UserService {
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         Profile profile = userMapper.toProfile(request);
-        profile.setUserId(user.getId());
+        profile.setUserId(user);
         profileRepository.save(profile);
         return userMapper.toUserResponse(user);
     }

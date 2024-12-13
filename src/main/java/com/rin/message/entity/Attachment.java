@@ -15,8 +15,10 @@ import java.time.Instant;
 public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
-    String messageId;
+    Long id;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "message_id")
+    Message messageId;
     String filePath;
     String fileName;
     String fileType;

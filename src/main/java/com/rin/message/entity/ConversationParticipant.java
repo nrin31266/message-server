@@ -15,8 +15,10 @@ import java.time.Instant;
 public class ConversationParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
-    String conversationId;
+    Long id;
+    @ManyToOne
+    @JoinColumn(name = "conversation_id")
+    Conversation conversationId;
     String userId;
     int role;
     Instant joinedAt;

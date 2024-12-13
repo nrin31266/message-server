@@ -17,7 +17,9 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String userId;
+    @JoinColumn(name = "user_id")
+    @OneToOne
+    User userId;
     String firstName;
     String lastName;
     LocalDate dob;

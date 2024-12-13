@@ -16,8 +16,10 @@ import java.time.Instant;
 public class MessageReadStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
-    String messageId;
+    Long id;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "message_id")
+    Message messageId;
     String userId;
     @Enumerated(EnumType.STRING)
     MessageStatus status;
