@@ -58,7 +58,7 @@ public class UserService {
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         Profile profile = userMapper.toProfile(request);
-        profile.setUserId(user);
+        profile.setUser(user);
         profileRepository.save(profile);
         return userMapper.toUserResponse(user);
     }

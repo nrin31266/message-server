@@ -1,7 +1,6 @@
 package com.rin.message.service;
 
-import com.rin.message.dto.response.MyInfoResponse;
-import com.rin.message.entity.Profile;
+import com.rin.message.dto.response.UserResponse;
 import com.rin.message.entity.User;
 import com.rin.message.exception.AppException;
 import com.rin.message.exception.ErrorCode;
@@ -27,15 +26,10 @@ public class ProfileService {
     UserMapper userMapper;
     ProfileMapper profileMapper;
 
-    public MyInfoResponse getMyInfo() {
+    public UserResponse getMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-        log.warn(userId);
-        User user = userRepository.findById(userId).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
-        Profile profile = profileRepository.findByUserId(userId).orElse(null);
-        return MyInfoResponse.builder()
-                .profile(profileMapper.toProfileResponse(profile))
-                .user(userMapper.toUserResponse(user))
-                .build();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResponse(user);
     }
 }

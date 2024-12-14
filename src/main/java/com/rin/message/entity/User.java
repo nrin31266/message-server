@@ -1,5 +1,7 @@
 package com.rin.message.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,15 +28,15 @@ public class User {
     @Column(updatable = false)
     Instant createdAt;
     Instant updatedAt;
-
     @ManyToMany
     List<Role> roles;
-
+    @JsonIgnore // Ignores the profile while serializing User object
+    @OneToOne(mappedBy = "user")
+    Profile profile;
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
     }
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();

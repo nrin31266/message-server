@@ -60,8 +60,8 @@ public class AuthService {
 
     private String generateToken(User user) {
         JWTClaimsSet jwtClaimsSet= new JWTClaimsSet.Builder()
-                .subject(user.getId())
-                .claim("username", user.getUsername())
+                .subject(user.getUsername())
+                .claim("userId", user.getId())
                 .issuer("message.rin")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()))
