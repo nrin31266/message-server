@@ -1,6 +1,7 @@
 package com.rin.message.service;
 
 
+import com.rin.message.dto.PageResponse;
 import com.rin.message.dto.request.CreateUserRequest;
 import com.rin.message.dto.response.UserResponse;
 import com.rin.message.entity.Profile;
@@ -15,6 +16,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -74,5 +78,20 @@ public class UserService {
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(userMapper::toUserResponse).toList();
+    }
+
+
+    public PageResponse<UserResponse> search(int page, int size, String keyword) {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<User> pageData = userRepository.search(keyword, pageable);
+
+        return PageResponse.<UserResponse>builder()
+                .currentPage(page)
+                .totalPages(pageData.getTotalPages())
+                .pageSize(size)
+                .totalElements(pageData.getTotalElements())
+                .data(pageData.getContent().stream().map(userMapper::toUserResponse).toList())
+                .build();
     }
 }

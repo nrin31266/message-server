@@ -1,6 +1,7 @@
 package com.rin.message.controller;
 
 import com.rin.message.dto.ApiResponse;
+import com.rin.message.dto.PageResponse;
 import com.rin.message.dto.request.CreateUserRequest;
 import com.rin.message.dto.response.UserResponse;
 import com.rin.message.service.UserService;
@@ -39,6 +40,13 @@ public class UserController {
     public ApiResponse<List<UserResponse>> getUserByUsername(){
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUsers())
+                .build();
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<PageResponse<UserResponse>> search(@RequestParam int page, @RequestParam(required = false) String keyword){
+        return ApiResponse.<PageResponse<UserResponse>>builder()
+                .result(userService.search(page, 5, keyword))
                 .build();
     }
 }

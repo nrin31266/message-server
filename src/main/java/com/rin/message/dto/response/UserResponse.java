@@ -16,7 +16,6 @@ import java.util.List;
 public class UserResponse {
     String id;
     String username;
-    String password;
     String email;
     Profile profile;
     boolean enabled;
