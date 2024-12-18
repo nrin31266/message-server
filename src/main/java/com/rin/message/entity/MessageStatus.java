@@ -21,11 +21,6 @@ public class MessageStatus {
     com.rin.message.constant.MessageStatus status;
     Instant updatedAt;
 
-    // Thêm trường liên kết với Message
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "message_id")
-    Message message;
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();

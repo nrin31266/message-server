@@ -27,7 +27,7 @@ public class Message {
     Instant updatedAt;
 
     // Mối quan hệ One-to-One với MessageReadStatus
-    @OneToOne(mappedBy = "message", cascade = CascadeType.ALL)
+    @OneToOne
     MessageStatus messageStatus;
 
     // Mối quan hệ One-to-Many với Attachment
