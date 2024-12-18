@@ -19,6 +19,7 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

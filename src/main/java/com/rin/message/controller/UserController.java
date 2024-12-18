@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/search")
     public ApiResponse<PageResponse<UserResponse>> search(@RequestParam int page, @RequestParam(required = false) String keyword){
         return ApiResponse.<PageResponse<UserResponse>>builder()
-                .result(userService.search(page, 5, keyword))
+                .result(userService.search(page, 10, keyword))
                 .build();
     }
 }

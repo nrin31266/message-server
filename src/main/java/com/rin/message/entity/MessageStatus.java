@@ -12,24 +12,23 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ConversationParticipant {
+public class MessageStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne
-    @JoinColumn(name = "conversation_id")
-    Conversation conversationId;
-    String userId;
-    int role;
-    Instant joinedAt;
+
+    @Enumerated(EnumType.STRING)
+    com.rin.message.constant.MessageStatus status;
     Instant updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        joinedAt = Instant.now();
-    }
+    // Thêm trường liên kết với Message
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "message_id")
+    Message message;
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
 }
+

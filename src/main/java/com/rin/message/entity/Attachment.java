@@ -16,16 +16,20 @@ public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "message_id")
-    Message messageId;
+
     String filePath;
     String fileName;
     String fileType;
-    Instant uploadTime;
+    double fileSize;
+    Instant uploadAt;
+
+    // Thêm trường liên kết với Message
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "message_id")
+    Message message;
 
     @PrePersist
     protected void onCreate() {
-        uploadTime = Instant.now();
+        uploadAt = Instant.now();
     }
 }

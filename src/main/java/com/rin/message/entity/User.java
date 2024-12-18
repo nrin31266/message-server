@@ -30,8 +30,9 @@ public class User {
     Instant updatedAt;
     @ManyToMany
     List<Role> roles;
-    @JsonIgnore // Ignores the profile while serializing User object
-    @OneToOne(mappedBy = "user")
+
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     Profile profile;
     @PrePersist
     protected void onCreate() {
