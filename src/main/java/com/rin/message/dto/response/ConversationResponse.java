@@ -1,8 +1,8 @@
 package com.rin.message.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rin.message.entity.ChatMember;
-import com.rin.message.entity.Profile;
-import com.rin.message.entity.Role;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,14 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String id;
-    String username;
-    String email;
-//    Profile profile;
-    boolean enabled;
+public class ConversationResponse {
+    Long id;
+    String name;
+    boolean isGroup;
+    String createdBy;
     Instant createdAt;
     Instant updatedAt;
-    List<Role> roles;
-    ProfileResponse profile;
+    List<ChatMemberResponse> chatMembers;
 }

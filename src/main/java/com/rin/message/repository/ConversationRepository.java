@@ -16,8 +16,8 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
                 select c from Conversation c
                 join ChatMember cm1 on cm1.conversation.id = c.id
                 join ChatMember cm2 on cm2.conversation.id = c.id
-                where (cm1.userId = :senderId and cm2.userId = :receiverId)
-                or (cm1.userId = :receiverId and cm2.userId = :senderId)
+                where (cm1.user.id = :senderId and cm2.user.id = :receiverId)
+                or (cm1.user.id = :receiverId and cm2.user.id = :senderId)
             """)
     Optional<Conversation> findConversation(@Param("senderId") String senderId, @Param("receiverId") String receiverId);
 

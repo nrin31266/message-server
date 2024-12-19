@@ -1,5 +1,8 @@
 package com.rin.message.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rin.message.constant.MessageType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,16 +29,17 @@ public class Message {
     Instant createdAt;
     Instant updatedAt;
 
-    // Mối quan hệ One-to-One với MessageReadStatus
-    @OneToOne
+    @JsonBackReference
+    @OneToOne(mappedBy = "message", cascade = CascadeType.ALL)
     MessageStatus messageStatus;
 
-    // Mối quan hệ One-to-Many với Attachment
+    @JsonBackReference
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Attachment> attachments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "conversation_id")
+    @JsonManagedReference
     Conversation conversation;
 
     @PrePersist

@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -48,22 +49,17 @@ public class UserService {
         if (existingUser.isPresent()) {
             throw new AppException(ErrorCode.USER_EXISTS);
         }
-
         User user = userMapper.toUser(request);
-
         if(request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
         user.setRoles(roleRepository.findAllById(List.of("USER")));
-
+        user.setProfile(userMapper.toProfile(request));
         try {
             user = userRepository.save(user);
         }catch (Exception e) {
-            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+            throw new RuntimeException(e);
         }
-        Profile profile = userMapper.toProfile(request);
-        profile.setUser(user);
-        profileRepository.save(profile);
         return userMapper.toUserResponse(user);
     }
 
@@ -73,6 +69,7 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {

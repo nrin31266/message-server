@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProfileResponse {
-    String id;
+    Long id;
     String userId;
     String firstName;
     String lastName;

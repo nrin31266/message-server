@@ -1,6 +1,5 @@
 package com.rin.message.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +9,9 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +32,9 @@ public class User {
     @ManyToMany
     List<Role> roles;
 
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", nullable = false, referencedColumnName = "id")
     Profile profile;
     @PrePersist
     protected void onCreate() {
@@ -42,5 +44,4 @@ public class User {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
-
 }

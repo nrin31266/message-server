@@ -1,5 +1,5 @@
 package com.rin.message.constant;
 
-public enum MessageStatus {
+public enum Status {
     SENT, RECEIVED, READ
 }

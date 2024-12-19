@@ -26,6 +26,5 @@ public class MessageResponse {
     Instant createdAt;
     Instant updatedAt;
     MessageStatus messageStatus;
-    List<Attachment> attachments;
-    Conversation conversation;
+    List<AttachmentResponse> attachments;
 }

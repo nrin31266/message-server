@@ -10,19 +10,19 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
+    @JsonBackReference
     User user;
     String firstName;
     String lastName;
@@ -33,14 +33,13 @@ public class Profile {
     @Column(updatable = false)
     Instant createdAt;
     Instant updatedAt;
-
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
     }
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
+
 }

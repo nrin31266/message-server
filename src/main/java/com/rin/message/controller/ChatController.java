@@ -1,34 +1,27 @@
 package com.rin.message.controller;
 
+import com.rin.message.dto.ApiResponse;
 import com.rin.message.dto.request.socket.ChatMessage;
 import com.rin.message.dto.request.socket.UserRegistration;
+import com.rin.message.service.ChatService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequiredArgsConstructor
+@RestController
+@RequestMapping("/chats")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
+@RequiredArgsConstructor
 public class ChatController {
-    SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat/sendMessage")
-    public void sendMessage(@Payload ChatMessage chatMessage) {
-        log.info(chatMessage.toString());
-        String receiver = chatMessage.getReceiver();
-        if(receiver != null) {
-            messagingTemplate.convertAndSendToUser(receiver,"/queue/message/", chatMessage);
-        }
-    }
-
-    @MessageMapping("/chat.addUser")
-    public void addUser(@Payload UserRegistration userRegistration, SimpMessageHeaderAccessor headerAccessor) {
-        log.info(userRegistration.toString());
-        headerAccessor.getSessionAttributes().put("user", userRegistration.getUsername());
-    }
 }

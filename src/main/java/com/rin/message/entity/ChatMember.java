@@ -1,5 +1,7 @@
 package com.rin.message.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rin.message.constant.ChatRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,14 +20,17 @@ public class ChatMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String userId;
-
     @Enumerated(EnumType.STRING)
     ChatRole role;
 
-    // Thêm trường liên kết với Conversation
+    @JsonManagedReference
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conversation_id")
+    User user;
+
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversation_id", nullable = false)
     Conversation conversation;
 
     Instant joinedAt;
@@ -42,4 +47,3 @@ public class ChatMember {
         updatedAt = Instant.now();
     }
 }
-

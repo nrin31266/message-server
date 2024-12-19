@@ -1,5 +1,6 @@
 package com.rin.message.config;
 
+import com.rin.message.entity.Profile;
 import com.rin.message.entity.Role;
 import com.rin.message.entity.User;
 import com.rin.message.repository.RoleRepository;
@@ -37,6 +38,9 @@ public class AppInitConfig {
                         .password(passwordEncoder.encode("admin"))
                         .roles(roleRepository.findAllById(List.of("ADMIN")))
                         .email("admin@gmail.com")
+                        .profile(Profile.builder()
+                                .firstName("admin")
+                                .build())
                         .build();
                 userRepository.save(user);
                 log.warn("admin user has been created with default password: admin, please change it");

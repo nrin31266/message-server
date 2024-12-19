@@ -15,6 +15,7 @@ public enum ErrorCode {
     CAN_NOT_PARSE_TOKEN(1006, "Can't parse token", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1008, "You do not have permission", HttpStatus.FORBIDDEN),
+    CONVERSATION_NOT_FOUND(1009, "Conversation not found", HttpStatus.NOT_FOUND),
     ;
 
 

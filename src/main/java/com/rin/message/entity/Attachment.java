@@ -1,5 +1,7 @@
 package com.rin.message.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +25,7 @@ public class Attachment {
     double fileSize;
     Instant uploadAt;
 
-    // Thêm trường liên kết với Message
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_id")
     Message message;
