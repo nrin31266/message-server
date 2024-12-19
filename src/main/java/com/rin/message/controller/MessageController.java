@@ -1,6 +1,8 @@
 package com.rin.message.controller;
 
+import com.rin.message.constant.ChatType;
 import com.rin.message.dto.ApiResponse;
+import com.rin.message.dto.PageResponse;
 import com.rin.message.dto.request.ChatMessageRequest;
 import com.rin.message.dto.response.MessageResponse;
 import com.rin.message.service.ChatService;
@@ -31,6 +33,19 @@ public class MessageController {
     ApiResponse<List<MessageResponse>> getAll() {
         return ApiResponse.<List<MessageResponse>>builder()
                 .result(chatService.getAllMessages())
+                .build();
+    }
+
+
+    @GetMapping("/chat")
+    ApiResponse<PageResponse<MessageResponse>> chat(@RequestParam int page
+            , @RequestParam(name = "size", defaultValue = "15") int size
+            , @RequestParam(name = "chat-type", defaultValue = "PERSONAL") ChatType chatType
+            , @RequestParam(name = "senderId") String senderId
+            , @RequestParam(name = "receiverId") String receiverId ){
+
+        return ApiResponse.<PageResponse<MessageResponse>>builder()
+                .result(chatService.getAllMessages(page, size, chatType, senderId, receiverId))
                 .build();
     }
 }

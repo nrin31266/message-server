@@ -22,6 +22,5 @@ public class ChatMessageRequest {
 
     ChatType chatType;
 
-
     List<AttachmentRequest> attachments;
 }
