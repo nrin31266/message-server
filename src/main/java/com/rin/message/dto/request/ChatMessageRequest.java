@@ -19,8 +19,6 @@ public class ChatMessageRequest {
     String content;
     MessageType messageType;
     Long conversationId;
-
     ChatType chatType;
-
     List<AttachmentRequest> attachments;
 }

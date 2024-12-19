@@ -39,7 +39,7 @@ public class MessageController {
 
     @GetMapping("/chat")
     ApiResponse<PageResponse<MessageResponse>> chat(@RequestParam int page
-            , @RequestParam(name = "size", defaultValue = "15") int size
+            , @RequestParam(name = "size", defaultValue = "10") int size
             , @RequestParam(name = "chat-type", defaultValue = "PERSONAL") ChatType chatType
             , @RequestParam(name = "senderId") String senderId
             , @RequestParam(name = "receiverId") String receiverId ){

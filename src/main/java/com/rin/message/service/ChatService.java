@@ -41,29 +41,52 @@ public class ChatService {
     public MessageResponse saveMessage(ChatMessageRequest request) {
         Conversation conversation;
         if (request.getChatType() == ChatType.PERSONAL) {
-            Optional<Conversation> conversationOptional = conversationRepository.findConversation(request.getSenderId(), request.getReceiverId());
-            if (conversationOptional.isEmpty()) {
-                Conversation conversationEntity = Conversation.builder()
-                        .createdBy(request.getSenderId())
-                        .chatMembers(new ArrayList<>())
-                        .build();
-                ChatMember sender = ChatMember.builder()
-                        .user(User.builder()
-                                .id(request.getSenderId())
-                                .build())
-                        .conversation(conversationEntity)
-                        .build();
-                ChatMember receiver = ChatMember.builder()
-                        .user(User.builder()
-                                .id(request.getReceiverId())
-                                .build())
-                        .conversation(conversationEntity)
-                        .build();
-                conversationEntity.setChatMembers(List.of(sender, receiver));
-                conversation = conversationRepository.save(conversationEntity);
+            if(request.getSenderId().equals(request.getReceiverId())) {
+                Optional<Conversation> conversationOptional = conversationRepository.findSingleMemberConversation(request.getSenderId());
+                if (conversationOptional.isEmpty()) {
+                    Conversation conversationEntity = Conversation.builder()
+                            .createdBy(request.getSenderId())
+                            .chatMembers(new ArrayList<>())
+                            .build();
+                    ChatMember chatMember = ChatMember.builder()
+                            .user(User.builder()
+                                    .id(request.getSenderId())
+                                    .build())
+                            .conversation(conversationEntity)
+                            .build();
 
-            } else {
-                conversation = conversationOptional.get();
+                    conversationEntity.setChatMembers(List.of(chatMember));
+                    conversationEntity.setChatType(ChatType.MYSELF);
+                    conversation = conversationRepository.save(conversationEntity);
+                } else {
+                    conversation = conversationOptional.get();
+                }
+            }else{
+                Optional<Conversation> conversationOptional = conversationRepository.findConversation(request.getSenderId(), request.getReceiverId());
+                if (conversationOptional.isEmpty()) {
+                    Conversation conversationEntity = Conversation.builder()
+                            .createdBy(request.getSenderId())
+                            .chatMembers(new ArrayList<>())
+                            .build();
+                    ChatMember sender = ChatMember.builder()
+                            .user(User.builder()
+                                    .id(request.getSenderId())
+                                    .build())
+                            .conversation(conversationEntity)
+                            .build();
+                    ChatMember receiver = ChatMember.builder()
+                            .user(User.builder()
+                                    .id(request.getReceiverId())
+                                    .build())
+                            .conversation(conversationEntity)
+                            .build();
+
+                    conversationEntity.setChatMembers(List.of(sender, receiver));
+                    conversation = conversationRepository.save(conversationEntity);
+
+                } else {
+                    conversation = conversationOptional.get();
+                }
             }
         } else if (request.getChatType() == ChatType.GROUP) {
             conversation = conversationRepository.findById(Long.parseLong(request.getReceiverId()))
@@ -97,7 +120,12 @@ public class ChatService {
     public PageResponse<MessageResponse> getAllMessages(int page, int size, ChatType chatType, String senderId, String receiverId) {
         Conversation conversation;
         if (chatType == ChatType.PERSONAL) {
-            Optional<Conversation> conversationOptional = conversationRepository.findConversation(senderId, receiverId);
+            Optional<Conversation> conversationOptional;
+            if(senderId.equals(receiverId)) {
+                conversationOptional = conversationRepository.findSingleMemberConversation(senderId);
+            }else{
+                conversationOptional = conversationRepository.findConversation(senderId, receiverId);
+            }
             if (conversationOptional.isEmpty()) {
                 return buildPageEmpty();
             }
