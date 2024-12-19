@@ -3,6 +3,7 @@ package com.rin.message.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.rin.message.constant.ChatType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,8 +24,9 @@ public class Conversation {
 
     String name;
 
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    boolean isGroup = false;
+    ChatType chatType = ChatType.PERSONAL;
 
     String createdBy;
     Instant createdAt;

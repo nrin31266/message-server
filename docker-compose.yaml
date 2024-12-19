@@ -30,6 +30,6 @@ services:
       - PMA_PORT=3306
     networks:
       - message-clone
-
 volumes:
   mysql-data:
+  cache:

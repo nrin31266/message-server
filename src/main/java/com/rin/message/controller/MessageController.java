@@ -21,10 +21,9 @@ public class MessageController {
     ChatService chatService;
 
     @PostMapping
-    ApiResponse<MessageResponse> create(@RequestBody ChatMessageRequest chatMessageRequest
-            , @RequestParam(value = "isGroup", defaultValue = "false", required = false) boolean isGroup) {
+    ApiResponse<MessageResponse> create(@RequestBody ChatMessageRequest chatMessageRequest) {
         return ApiResponse.<MessageResponse>builder()
-                .result(chatService.saveMessage(chatMessageRequest, isGroup))
+                .result(chatService.saveMessage(chatMessageRequest))
                 .build();
     }
 

@@ -25,6 +25,6 @@ public class MessageResponse {
     String content;
     Instant createdAt;
     Instant updatedAt;
-    MessageStatus messageStatus;
+    MessageStatusResponse messageStatus;
     List<AttachmentResponse> attachments;
 }

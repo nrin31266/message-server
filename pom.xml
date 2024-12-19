@@ -32,6 +32,8 @@
         <org.mapstruct.version>1.6.0</org.mapstruct.version>
     </properties>
     <dependencies>
+
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
