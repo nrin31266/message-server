@@ -25,6 +25,8 @@ public class Message {
     String receiverId;
     @Enumerated(EnumType.STRING)
     MessageType messageType;
+
+    @Column(length = 9000)
     String content;
     Instant createdAt;
     Instant updatedAt;

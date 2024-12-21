@@ -21,30 +21,20 @@ public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Sử dụng IDENTITY nếu muốn auto-increment
     Long id;
-
     String name;
-
     @Enumerated(EnumType.STRING)
     @Builder.Default
     ChatType chatType = ChatType.PERSONAL;
-
     String createdBy;
     Instant createdAt;
     Instant updatedAt;
-
     @JsonBackReference
     @OneToMany(mappedBy = "conversation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<ChatMember> chatMembers;
-
-
-
-
-
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
     }
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();

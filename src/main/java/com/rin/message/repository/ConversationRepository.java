@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,6 +32,13 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
                 and c.chatType = "MYSELF"
             """)
     Optional<Conversation> findSingleMemberConversation(@Param("userId") String userId);
+
+//    @Query("""
+//                SELECT c from Conversation c
+//                join Message m on m.conversation.id = c.id
+//                join User u on u.id = m.conversation.id
+//            """)
+//    List<Object[]> findConversationsWithDetails(@Param("userId") String userId);
 
 
 }
